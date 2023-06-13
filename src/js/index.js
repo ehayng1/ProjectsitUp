@@ -69,7 +69,7 @@ let docSnap;
 async function getUserInfo() {
   docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
-    // 60000
+    console.log(docSnap.data());
     document.getElementById("useTime").innerText =
       (docSnap.data().useTime / 60000).toFixed(2) + " min";
     document.getElementById("break").innerText =
@@ -81,3 +81,8 @@ async function getUserInfo() {
   }
 }
 getUserInfo();
+
+let obj = {
+  time: 1,
+};
+console.log(obj.time);
