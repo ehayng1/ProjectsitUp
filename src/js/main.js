@@ -1,5 +1,8 @@
 import { upload } from "./index.js";
+import { getUserInfo } from "./index.js";
 import { serverTimestamp } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
+// const { systemPreferences } = require("electron");
+// import { reset } from "./index.js";
 // const { dialog } = require("electron");
 let timeThreshold = 300; // For 0.5 seconds;
 let startAlgo = false;
@@ -8,8 +11,34 @@ let lastClosedTime,
 let body = document.querySelector("body");
 let message;
 
+function reset() {
+  goodPosture = 0;
+  badPosture = 0;
+  useTime = 0;
+  cameraTime = 0;
+  countDistance = 0;
+  countHeadTowardShoulder = 0;
+  countHeadTurned = 0;
+  countHeadUporDown = 0;
+}
+
 //entry point :
 export function main() {
+  let access;
+  window.electronAPI
+    .requestWebcamAccess()
+    .then(() => {
+      console.log("Webcam access granted. Proceed with using the webcam.");
+      access = true;
+      console.log(access);
+    })
+    .catch((error) => {
+      console.error("Error requesting webcam access:", error);
+      // Your code to handle the error
+      access = false;
+      console.log(access);
+    });
+
   JEEFACETRANSFERAPI.init({
     canvasId: "canvas",
     NNCpath: "assets/model/",
@@ -19,8 +48,8 @@ export function main() {
           "ERROR - cannot init JEEFACETRANSFERAPI. errCode =",
           errCode
         );
-        errorCallback(errCode);
-        return;
+        // errorCallback(errCode);
+        // return;
       }
       console.log("INFO : JEEFACETRANSFERAPI is ready !!!");
       successCallback();
@@ -41,18 +70,19 @@ export function errorCallback(errorCode) {
   // Add code to handle the error
 }
 
-export function nextFrame() {
+export async function nextFrame() {
   if (!startAlgo) {
     return;
   }
   let deltaTime = Date.now() - lastClosedTime;
   if (deltaTime > timeThreshold && continuous) {
-    start_alarm();
+    // start_alarm();
     // console.log("Alarm Called");
     //when the user posture is BAD
+
     body.style.background = "#f00";
   } else {
-    stop_alarm();
+    // stop_alarm();
     //when the user posture is GOOD
     body.style.background = "#fff";
   }
@@ -88,7 +118,9 @@ export function nextFrame() {
             countHeadTurned: countHeadTurned,
             countHeadUporDown: countHeadUporDown,
           };
-          upload(data);
+          await upload(data);
+          getUserInfo();
+          data = reset();
         }
         state = "Bad";
         goodEndTime = new Date().getTime();
@@ -107,13 +139,14 @@ export function nextFrame() {
 
         badEndTime = new Date().getTime();
         let diff = badEndTime - badStartTime;
-        if (diff > 5000) {
+
+        if (diff > 5 * 60 * 1000) {
           badPosture = badPosture + 5000;
           useTime = useTime + 5000;
           cameraTime = cameraTime + 5000;
           badStartTime = new Date().getTime();
           console.log(badStartTime);
-          alert("Your posture has been bad for 5 seconds");
+          alert("Your posture has been bad for 5 minutes");
           // dialog.showMessageBox({
           //   type: "info",
           //   title: "Information",
@@ -154,12 +187,15 @@ export function nextFrame() {
           goodPosture: goodPosture,
           badPosture: useTime - goodPosture,
           breakTime: cameraTime - useTime,
+          // breakTime: useTime - cameraTime,
           countDistance: countDistance,
           countHeadTowardShoulder: countHeadTowardShoulder,
           countHeadTurned: countHeadTurned,
           countHeadUporDown: countHeadUporDown,
         };
-        upload(data);
+        await upload(data);
+        getUserInfo();
+        data = reset();
       }
       state = "Good";
       console.log("Good Posture");
@@ -167,17 +203,17 @@ export function nextFrame() {
       let timeDiff = badEndTime - badStartTime;
       if (timeDiff > timeThreshold) {
         // warn user if bad posture persists more than 5 min
-        if (timeDiff > 3000) {
-          alert("Your posture has been bad for 3 seconds!");
-          // dialog.showMessageBox({
-          //   type: "info",
-          //   title: "Information",
-          //   message: "Your posture has been bad for 5 seconds!",
-          //   // icon: "/path/to/image.png",
-          //   buttons: ["OK"],
-          // });
-          badStartTime = new Date().getTime();
-        }
+        // if (timeDiff > 3000) {
+        //   alert("Your posture has been bad for 3 seconds!");
+        //   // dialog.showMessageBox({
+        //   //   type: "info",
+        //   //   title: "Information",
+        //   //   message: "Your posture has been bad for 5 seconds!",
+        //   //   // icon: "/path/to/image.png",
+        //   //   buttons: ["OK"],
+        //   // });
+        //   badStartTime = new Date().getTime();
+        // }
         badPosture = badPosture + timeDiff;
         // console.log(
         //   "Bad Posture Duration: ",
@@ -205,10 +241,6 @@ export function nextFrame() {
     //**************************************************************************** */
 
     // The API is detected
-    // console.log("Detected");
-    // endTime = new Date().getTime();
-    //measure Sitting TIME here!
-    // isBreak = false;
   } else {
     //wrap up
     goodEndTime = new Date().getTime();
@@ -228,12 +260,15 @@ export function nextFrame() {
         goodPosture: goodPosture,
         badPosture: useTime - goodPosture,
         breakTime: cameraTime - useTime,
+        // breakTime: useTime - cameraTime,
         countDistance: countDistance,
         countHeadTowardShoulder: countHeadTowardShoulder,
         countHeadTurned: countHeadTurned,
         countHeadUporDown: countHeadUporDown,
       };
-      upload(data);
+      await upload(data);
+      data = reset();
+      getUserInfo();
     }
     state = "Not Detected";
 
@@ -267,8 +302,12 @@ let goodStartTime;
 let goodEndTime;
 let badStartTime;
 let badEndTime;
+
+// time detected
 let useTimeStart;
 let useTimeEnd;
+
+// time used.
 let cameraStartTime;
 let cameraEndTime;
 
@@ -278,7 +317,7 @@ let countHeadTurned = 0;
 let countHeadUporDown = 0;
 
 export function start() {
-  init_sound();
+  // init_sound();
   startAlgo = true;
   document.getElementById("camera").style.display = "block";
   cameraStartTime = new Date().getTime();
@@ -296,6 +335,7 @@ export function cameraOff() {
   document.getElementById("camera").style.display = "none";
 }
 
+// unused but should be used.
 export function quit() {
   // if endtime - starttime > threshold
   // user quitted straight without turning off the camera
@@ -306,13 +346,9 @@ export function quit() {
     // uploadData()
     // just quit
   }
-
-  // if endtime - startime < threshold
-  // user turned off camera before quitting
-  // quit without updating the data
 }
-//when the electron ends call stop manually as well
-export function stop() {
+//when the electron ends call this function manually as well
+export async function stop() {
   //wrap up
   cameraEndTime = new Date().getTime();
   let tempTime = cameraEndTime - cameraStartTime;
@@ -321,10 +357,12 @@ export function stop() {
   goodEndTime = new Date().getTime();
   tempTime = goodEndTime - goodStartTime;
   goodPosture = tempTime + goodPosture;
+  // goodPosture = tempTime;
 
   useTimeEnd = new Date().getTime();
   tempTime = useTimeEnd - useTimeStart;
   useTime = useTime + tempTime;
+  // useTime =  tempTime;
 
   // append each times to firebase database instead of console logging
   console.log("Total Camera Time: ", Math.floor(cameraTime / 1000), " seconds");
@@ -357,31 +395,46 @@ export function stop() {
     goodPosture: goodPosture,
     badPosture: useTime - goodPosture,
     breakTime: cameraTime - useTime,
+    // breakTime: useTime - cameraTime,
     countDistance: countDistance,
     countHeadTowardShoulder: countHeadTowardShoulder,
     countHeadTurned: countHeadTurned,
     countHeadUporDown: countHeadUporDown,
   };
-  upload(data);
+  await upload(data);
+  data = reset();
+  getUserInfo();
   document.getElementById("camera").style.display = "none";
 }
 
 export function handleSwitch() {
-  // console.log(isSwitchOn);
-  let camera = document.getElementById("cameraSwitch");
+  console.log("Switch Button Clicked!");
+  let camera;
+  let isFirstPage = !document.getElementById("cameraSwitch");
+  // console.log(document.getElementById("cameraSwitch"));
+
+  if (isFirstPage) {
+    camera = document.getElementById("cameraSwitchIndex");
+  } else {
+    camera = document.getElementById("cameraSwitch");
+  }
+  console.log(camera);
   camera.innerText = isSwitchOn ? "Camera On" : "Camera Off";
   if (isSwitchOn) {
-    document.getElementById("camera").style.display = "none";
-    document.getElementById("guide").style.display = "block";
+    if (!isFirstPage) {
+      document.getElementById("camera").style.display = "none";
+      document.getElementById("guide").style.display = "block";
+    }
     stop();
   } else {
     isSwitchOn = true;
-    document.getElementById("guide").style.display = "none";
-    document.getElementById("camera").style.display = "block";
+    if (!isFirstPage) {
+      document.getElementById("camera").style.display = "block";
+      document.getElementById("guide").style.display = "none";
+    }
     start();
   }
 }
-let currDate = new Date().toDateString();
 window.addEventListener("load", main);
 document
   .getElementById("cameraToggle")

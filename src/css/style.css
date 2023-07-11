@@ -133,3 +133,8 @@ footer div:nth-of-type(2) {
 		transform: translate(19px, 0);
 	}
 } */
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 5%;
+}

@@ -86,7 +86,7 @@
         <li class="nav-item">
           <a class="nav-link" href="login.html">
             <i class="fa fa-sign-in-alt mr-2" style="font-size: 1.2em"></i>
-            <span>Login / Sign Up</span></a
+            <span>Sign Out / Sign Up</span></a
           >
         </li>
 
@@ -189,7 +189,7 @@
                   id="customSwitch1"
                 />
                 <label
-                  id="cameraSwitch"
+                  id="cameraSwitchIndex"
                   class="custom-control-label"
                   for="customSwitch1"
                   >Camera On</label
@@ -214,7 +214,7 @@
                           id="useTime"
                           class="h5 mb-0 font-weight-bold text-gray-800"
                         >
-                          0 sec
+                          0 min
                         </div>
                       </div>
                       <div class="col-auto">
@@ -243,7 +243,7 @@
                           id="break"
                           class="h5 mb-0 font-weight-bold text-gray-800"
                         >
-                          0 sec
+                          0 min
                         </div>
                       </div>
                       <div class="col-auto">
@@ -267,7 +267,7 @@
                           id="good"
                           class="h5 mb-0 font-weight-bold text-gray-800"
                         >
-                          0 sec
+                          0 min
                         </div>
                       </div>
                       <div class="col-auto">
@@ -294,7 +294,7 @@
                               id="bad"
                               class="h5 mb-0 mr-3 font-weight-bold text-gray-800"
                             >
-                              0 sec
+                              0 min
                             </div>
                           </div>
                           <!-- <div class="col">
@@ -325,10 +325,10 @@
 
             <!-- Content Row -->
 
-            <div class="row">
+            <div class="row d-flex align-items-stretch">
               <!-- Area Chart -->
               <div class="col-xl-8 col-lg-7">
-                <div class="card shadow mb-4">
+                <div class="card shadow mb-4" style="height: 95%">
                   <!-- Card Header - Dropdown -->
                   <div
                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
@@ -417,21 +417,32 @@
                       <canvas id="myPieChart"></canvas>
                     </div>
                     <div class="mt-4 text-center small">
-                      <span class="ml-5 mr-2">
-                        <i class="fas fa-circle text-primary"></i> Close to
-                        screen
-                      </span>
-                      <span class="ml-2 mr-5">
-                        <i class="fas fa-circle text-success"></i> Too up or
-                        down
-                      </span>
-                      <span class="ml-5 mr-2">
-                        <i class="fas fa-circle text-info"></i> Turned too much
-                      </span>
-                      <span class="mr-3">
-                        <i class="fas fa-circle text-lean"></i> Leaned to
-                        shoulder
-                      </span>
+                      <div class="d-flex flex-wrap justify-content-center">
+                        <div class="mb-2">
+                          <span class="mr-2">
+                            <i style="color: #f6c23e" class="fas fa-circle"></i>
+                            Close to screen
+                          </span>
+                        </div>
+                        <div class="mb-2">
+                          <span class="mr-2">
+                            <i style="color: #e74a3b" class="fas fa-circle"></i>
+                            Too up or down
+                          </span>
+                        </div>
+                        <div class="mb-2">
+                          <span class="mr-2">
+                            <i style="color: #3498db" class="fas fa-circle"></i>
+                            Turned too much
+                          </span>
+                        </div>
+                        <div class="mb-2">
+                          <span class="mr-2">
+                            <i style="color: #8e44ad" class="fas fa-circle"></i>
+                            Leaned to shoulder
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -441,9 +452,9 @@
             <!-- Content Row -->
             <div class="row">
               <!-- Content Column -->
-              <div class="col-lg-6 mb-4">
+              <div class="col-lg-6 mb-5 d-flex align-items-stretch">
                 <!-- Project Card Example -->
-                <div class="card shadow mb-4" style="height: 28rem">
+                <div class="card shadow">
                   <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
                       Recommendations
@@ -451,186 +462,102 @@
                   </div>
                   <!-- <h6 class="m-0 font-weight-bold text-primary">Exercises</h6> -->
                   <div
-                    class="card-body"
-                    style="display: flex; flex-direction: row; gap: 1rem"
+                    class="card-body mb-4"
+                    style="
+                      display: flex;
+                      flex-direction: row;
+                      gap: 1rem;
+                      flex-wrap: wrap;
+                    "
                   >
-                    <div class="card" style="width: 15rem">
-                      <iframe
-                        width="auto"
-                        height="auto"
-                        src="https://www.youtube.com/embed/eznjIHMTi_U"
-                        title="Most relieving neck pain exercise! Cervical Spine Retraction &amp; Extension - Mckenzie Method"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                      ></iframe>
-                      <!-- <iframe
-                        width="420"
-                        height="315"
-                        src="https://www.youtube.com/watch?v=eznjIHMTi_U"
-                      >
-                      </iframe> -->
-                      <!-- <img
-                        class="card-img-top"
-                        src="https://youtu.be/eznjIHMTi_U"
-                        alt="Card image cap"
-                      /> -->
-                      <div class="card-body">
-                        <h5 class="card-title" style="color: black">
-                          Mckenzie Method
-                        </h5>
-                        <p class="card-text">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="card h-100" height="auto">
+                          <iframe
+                            width="auto"
+                            height="60%"
+                            src="https://www.youtube.com/embed/eznjIHMTi_U"
+                            title="Most relieving neck pain exercise! Cervical Spine Retraction &amp; Extension - Mckenzie Method"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                          ></iframe>
+                          <div class="card-body">
+                            <h5 class="card-title" style="color: black">
+                              Mckenzie Method
+                            </h5>
+                            <p class="card-text">Back + Neck</p>
+                            <!-- <p class="card-text">
                           The McKenzie method or mechanical diagnosis and
                           therapy (MDT) is a system of diagnosis and treatment
                           for spinal and extremity musculoskeletal disorders.
-                        </p>
-                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                        </p> -->
+                            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                    <div class="card" style="width: 15rem">
-                      <iframe
-                        width="auto"
-                        height="auto"
-                        src="https://www.youtube.com/embed/JFuZdcU9L_g"
-                        title="Easy Hip Opener with the Butterfly Stretch with Sea Lark Chiropractic"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                      ></iframe>
+                      <div class="col-sm-12 col-md-6 col-lg-6">
+                        <div class="card h-100">
+                          <iframe
+                            width="auto"
+                            height="60%"
+                            src="https://www.youtube.com/embed/JFuZdcU9L_g"
+                            title="Easy Hip Opener with the Butterfly Stretch with Sea Lark Chiropractic"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen
+                          ></iframe>
 
-                      <div class="card-body">
-                        <h5 class="card-title" style="color: black">
-                          Butterfly
-                        </h5>
-                        <p class="card-text">
+                          <div class="card-body">
+                            <h5 class="card-title" style="color: black">
+                              Butterfly
+                            </h5>
+                            <p class="card-text">Back</p>
+                            <!-- <p class="card-text">
                           The butterfly stretch is also very helpful for anyone
                           who is experiencing tight hips or a groin injury.
-                        </p>
-                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
-                      </div>
-                    </div>
-                    <div class="card" style="width: 15rem">
-                      <iframe
-                        width="auto"
-                        height="auto"
-                        src="https://www.youtube.com/embed/BPlCatqZRPI"
-                        title="Fix your posture and reduce backpain  | 10 Minute Daily Stretch Routine"
-                        frameborder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                        allowfullscreen
-                      ></iframe>
-                      <!-- <iframe
-                        width="420"
-                        height="315"
-                        src="https://www.youtube.com/watch?v=eznjIHMTi_U"
-                      >
-                      </iframe> -->
-                      <!-- <img
-                        class="card-img-top"
-                        src="https://youtu.be/eznjIHMTi_U"
-                        alt="Card image cap"
-                      /> -->
-                      <div class="card-body">
-                        <h5 class="card-title" style="color: black">
-                          Angel Wings
-                        </h5>
-                        <p class="card-text">
-                          Wall angels activate postural muscles in your upper
-                          back that help keep your shoulders pulled back.
-                        </p>
-                        <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                        </p> -->
+                            <!-- <a href="#" class="btn btn-primary">Go somewhere</a> -->
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-
-                <!-- Color System -->
               </div>
 
-              <div class="col-lg-6 mb-4">
+              <div class="col-lg-6 col-md-12 mb-4 d-flex align-items-stretch">
                 <!-- Illustrations -->
-                <div class="card shadow mb-4" style="height: 28rem">
+                <div class="card shadow mb-4">
                   <div class="card-header py-3">
                     <h6 class="m-0 font-weight-bold text-primary">
                       Daily Posture Tips
                     </h6>
                   </div>
                   <div class="card-body">
-                    <!-- <div class="text-center"> -->
-                    <!-- <img
-                        class="img-fluid px-3 px-sm-4 mt-3 mb-4"
-                        style="width: 25rem"
-                        src="img/undraw_posting_photo.svg"
-                        alt="..."
-                      />
-                    </div> -->
                     <h5
-                      style="
-                        text-align: center;
-                        color: black;
-                        font-size: 2.5rem;
-                        font-style: italic;
-                        margin-top: 3rem;
-                      "
+                      class="text-center text-black font-italic"
+                      style="margin-top: 3rem"
                     >
                       "Be mindful of your posture"
-                      <!-- <a
-                        target="_blank"
-                        rel="nofollow"
-                        href="https://undraw.co/"
-                        >unDraw</a
-                      >, a constantly updated collection of beautiful svg images
-                      that you can use completely free and without attribution! -->
                     </h5>
                     <p
-                      style="
-                        text-align: center;
-                        margin-top: 1.5rem;
-                        font-style: italic;
-                        margin-bottom: 3rem;
-                      "
+                      class="text-center font-italic"
+                      style="margin-top: 1.5rem; margin-bottom: 3rem"
                     >
                       Mayo Clinic - Proper ergonomics for sitting
                     </p>
                     <p
-                      style="
-                        font-size: 1.2rem;
-                        font-style: italic;
-                        margin-top: 0rem;
-                        color: rgb(84, 82, 82);
-                        padding: 2rem;
-                      "
+                      class="text-center font-italic"
+                      style="color: rgb(84, 82, 82); padding: 2rem"
                     >
                       Throughout the day, consciously check your posture and
                       make adjustments if needed. Develop the habit of sitting
                       and standing tall with your shoulders back and your head
                       aligned with your spine.
                     </p>
-                    <!-- <a target="_blank" rel="nofollow" href="https://undraw.co/"
-                      >Browse Illustrations on unDraw &rarr;</a
-                    > -->
                   </div>
                 </div>
-
-                <!-- Approach -->
-                <!-- <div class="card shadow mb-4">
-                  <div class="card-header py-3">
-                    <h6 class="m-0 font-weight-bold text-primary">
-                      Development Approach
-                    </h6>
-                  </div>
-                  <div class="card-body">
-                    <p>
-                      Sit straights monitors the posture of the user. Click the
-                      Camera On button to start monitoring.
-                    </p>
-                    <p class="mb-0">
-                      Before working with this theme, you should become familiar
-                      with the Bootstrap framework, especially the utility
-                      classes.
-                    </p>
-                  </div>
-                </div> -->
               </div>
             </div>
           </div>
@@ -730,7 +657,10 @@
     <script>
       // let $ = require("jquery");
     </script>
+    <script type="module" src="src/js/preload.js"></script>
     <script type="module" src="src/js/main.js"></script>
+    <!-- <script type="module" src="src/js/main.js"></script>
+    <script type="module" src="./preload.js"></script> -->
 
     <!-- <script src="./contents/bootstrap/vendor/jquery/jquery.min.js"></script>
     <script src="./contents/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

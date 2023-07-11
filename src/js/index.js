@@ -34,44 +34,76 @@ const firebaseConfig = {
   appId: "1:145725455668:web:e9e2f4832d62ec73adf961",
 };
 const app = initializeApp(firebaseConfig);
-// const storage = getStorage();
 const db = getFirestore();
+const auth = getAuth();
+let uid;
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    uid = user.uid;
+    upload();
+    getUserInfo();
+    // Call any functions or perform actions that require the uid here
+  } else {
+    // User is signed out, handle accordingly
+  }
+});
 
 export async function upload(data) {
-  // console.log(data);
-  // let currDate = new Date().toDateString();
-  // const docRef = doc(db, "data", currDate);
-  // const docSnap = await getDoc(docRef);
+  // alert(uid);
 
+  const docRef = doc(db, uid, currDate);
+  let docSnap = await getDoc(docRef);
+  // console.log(data);
   if (docSnap.exists()) {
-    // data for today exists.
-    // console.log("Document data:", docSnap.data());
-    // data.map(({ key, val }) => ({ [key]: val + docSnap.data().key }));
     let tempData = { ...docSnap.data() };
     for (let key in tempData) {
       if (key !== "timeStamp") {
-        tempData[key] = tempData[key] + data[key];
+        tempData[key] = tempData[key] + Math.abs(data[key]);
       }
     }
-    // console.log("temp: ", tempData);
-    await setDoc(doc(db, "data", new Date().toDateString()), tempData);
+    console.log("data being set!", data);
+    await setDoc(doc(db, uid, new Date().toDateString()), tempData);
   } else {
-    // data for today does not exist. -> set a new doc.
-    await setDoc(doc(db, "data", new Date().toDateString()), data);
+    await setDoc(doc(db, uid, new Date().toDateString()), data);
   }
 }
-// document.querySelector("#upload").addEventListener("click", upload);
+// resets data
+export async function reset(data) {
+  // data.useTime = 0;
+  // data.cameraTime = 0;
+  // data.goodPosture = 0;
+  // data.badPosture = 0;
+  // data.breakTime = 0;
+  // data.countDistance = 0;
+  // data.countHeadTowardShoulder = 0;
+  // data.countHeadTurned = 0;
+  // data.countHeadUporDown = 0;
+  let newData = {
+    useTime: 0,
+    cameraTime: 0,
+    goodPosture: 0,
+    badPosture: 0,
+    breakTime: 0,
+    countDistance: 0,
+    countHeadTowardShoulder: 0,
+    countHeadTurned: 0,
+    countHeadUporDown: 0,
+  };
+  return newData;
+}
 
 // load data here
 let currDate = new Date().toDateString();
-const docRef = doc(db, "data", currDate);
-let docSnap;
-async function getUserInfo() {
-  docSnap = await getDoc(docRef);
+
+export async function getUserInfo() {
+  const docRef = doc(db, uid, currDate);
+  let docSnap = await getDoc(docRef);
+
   if (docSnap.exists()) {
     console.log(docSnap.data());
     document.getElementById("useTime").innerText =
-      (docSnap.data().useTime / 60000).toFixed(2) + " min";
+      (docSnap.data().cameraTime / 60000).toFixed(2) + " min";
     document.getElementById("break").innerText =
       (docSnap.data().breakTime / 60000).toFixed(2) + " min";
     document.getElementById("bad").innerText =
@@ -81,8 +113,3 @@ async function getUserInfo() {
   }
 }
 getUserInfo();
-
-let obj = {
-  time: 1,
-};
-console.log(obj.time);

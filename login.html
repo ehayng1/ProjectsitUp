@@ -56,71 +56,6 @@
     <!-- Page Wrapper -->
     <div id="wrapper">
       <!-- Sidebar -->
-      <ul
-        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
-        id="accordionSidebar"
-      >
-        <!-- Sidebar - Brand -->
-        <a
-          class="sidebar-brand d-flex align-items-center justify-content-center"
-          href="index.html"
-        >
-          <div class="sidebar-brand-icon rotate-n-15">
-            <!-- <i class="fas fa-laugh-wink"></i> -->
-            <i class="fa fa-chair"></i>
-          </div>
-          <div class="sidebar-brand-text mx-3">Sit Straight</div>
-        </a>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0" />
-
-        <!-- Nav Item - Dashboard -->
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">
-            <i style="font-size: 1.5em" class="mr-2 fa fa-chart-line fa-lg"></i>
-            <span>Dashboard</span></a
-          >
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="camera.html">
-            <i class="fa fa-tv mr-2" style="font-size: 1.2em"></i>
-            <span>Display Posture</span></a
-          >
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="login.html">
-            <i class="fa fa-sign-in-alt mr-2" style="font-size: 1.2em"></i>
-            <span>Login / Sign Up</span></a
-          >
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block" />
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-          <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
-
-        <!-- Sidebar Message -->
-        <!-- <div class="sidebar-card d-none d-lg-flex mt-4">
-          <img
-            class="sidebar-card-illustration mb-2"
-            src="img/undraw_rocket.svg"
-            alt="..."
-          />
-          <p class="text-center mb-2">
-            <strong> Sit straights </strong>monitors the posture of the user.
-            Click the Camera On button to get started.
-          </p>
-          <a
-            class="btn btn-success btn-sm"
-            href="https://startbootstrap.com/theme/sb-admin-pro"
-            >Start Sit Straight!</a
-          >
-        </div> -->
-      </ul>
 
       <!-- End of Sidebar -->
 
@@ -163,7 +98,7 @@
                       class="my-login-validation"
                       novalidate=""
                     >
-                      <div class="form-group">
+                      <!-- <div class="form-group">
                         <label for="name">Name</label>
                         <input
                           id="name"
@@ -174,7 +109,7 @@
                           autofocus
                         />
                         <div class="invalid-feedback">What's your name?</div>
-                      </div>
+                      </div> -->
 
                       <div class="form-group">
                         <label for="email">E-Mail Address</label>
@@ -223,7 +158,11 @@
                       </div> -->
 
                       <div class="form-group m-0">
-                        <button type="submit" class="btn btn-primary btn-block">
+                        <button
+                          id="logIn"
+                          type="submit"
+                          class="btn btn-primary btn-block"
+                        >
                           Log In
                         </button>
                       </div>
@@ -235,7 +174,7 @@
                   </div>
                 </div>
                 <div class="footer">
-                  Copyright &copy; 2017 &mdash; Your Company
+                  Copyright &copy; 2023 &mdash; Sit Straight
                 </div>
               </div>
             </div>
@@ -257,7 +196,7 @@
           integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
           crossorigin="anonymous"
         ></script>
-        <script src="js/my-login.js"></script>
+
         <!-- End of Main Content -->
 
         <!-- Footer -->
@@ -319,11 +258,11 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="src/js/jeelizFaceTransfer.js"></script>
+    <!-- <script src="src/js/jeelizFaceTransfer.js"></script>
     <script src="src/js/posture.js"></script>
-    <script src="src/js/audio.js"></script>
+    <script src="src/js/audio.js"></script> -->
 
-    <script type="module" src="src/js/index.js"></script>
+    <!-- <script type="module" src="src/js/index.js"></script> -->
     <script type="module" src="src/js/firebaseConfig.js"></script>
     <script src="./contents/bootstrap/vendor/jquery/jquery.min.js"></script>
     <script src="./contents/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -339,8 +278,8 @@
 
     <!-- Page level custom scripts -->
     <!-- <script src="./contents/bootstrap/js/demo/chart-area-demo.js"></script> -->
-    <script type="module" src="./src/js/lineChart.js"></script>
-    <script type="module" src="./src/js/pieChart.js"></script>
+    <!-- <script type="module" src="./src/js/lineChart.js"></script>
+    <script type="module" src="./src/js/pieChart.js"></script> -->
     <!-- BootStrap Ends -->
 
     <script>
@@ -349,7 +288,11 @@
 
     <script src="./contents/bootstrap/vendor/jquery/jquery.min.js"></script>
     <script src="./contents/bootstrap/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script type="module" src="src/js/main.js"></script>
+    <!-- <script type="module" src="src/js/main.js"></script> -->
+    <!-- <script type="module" src="./main.js"></script>
+    <script type="module" src="./preload.js"></script>-->
+
+    <script type="module" src="./login.js"></script>
 
     <!-- Core plugin JavaScript-->
     <!-- <script src="./contents/bootstrap/vendor/jquery-easing/jquery.easing.min.js"></script> -->

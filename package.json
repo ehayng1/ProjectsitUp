@@ -1,10 +1,10 @@
 {
   "name": "sit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron-forge start",
     "electron": "electron .",
     "electron:window": "SET ELECTRON_START_URL=http://localhost:3000 && yarn electron",
     "electron:xos": "ELECTRON_START_URL=http://localhost:3000 && yarn electron",
@@ -14,15 +14,26 @@
     "deploy:win32": "electron-builder --win --ia32",
     "deploy:win64": "electron-builder --win --x64",
     "deploy:win": "yarn deploy:win32 && yarn deploy:win64",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
   },
   "author": "Hyunwoo",
   "license": "ISC",
   "devDependencies": {
+    "@electron-forge/cli": "^6.2.1",
+    "@electron-forge/maker-deb": "^6.2.1",
+    "@electron-forge/maker-rpm": "^6.2.1",
+    "@electron-forge/maker-squirrel": "^6.2.1",
+    "@electron-forge/maker-zip": "^6.2.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^6.2.1",
     "electron": "^24.0.0",
+    "electron-notarize": "^1.2.2",
+    "electron-packager": "^17.1.1",
     "jquery": "^3.3.1"
   },
   "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
     "firebase": "^9.19.1"
   },
   "build": {
@@ -30,20 +41,20 @@
     "appId": "com.sitStraight.electron",
     "asar": true,
     "mac": {
+      "extendInfo": {
+        "NSCameraUsageDescription": "Please give us access to your camera",
+        "com.apple.security.device.camera": true
+      },
+      "hardenedRuntime": true,
+      "gatekeeperAssess": false,
       "target": [
         "default"
-      ],
-      "icon": "build/icons/icon.icns"
-    },
-    "dmg": {
-      "title": "NB",
-      "icon": "build/icons/icon.icns"
+      ]
     },
     "win": {
       "target": [
         "nsis"
-      ],
-      "icon": "build/icons/icon.ico"
+      ]
     },
     "nsis": {
       "oneClick": false,
@@ -51,10 +62,9 @@
       "createDesktopShortcut": true,
       "perMachine": true,
       "language": 1042,
-      "installerIcon": "build/icons/icon.ico",
-      "shortcutName": "NB",
-      "artifactName": "NB-${version}.${ext}",
-      "uninstallDisplayName": "NB"
+      "shortcutName": "SitStraight",
+      "artifactName": "SitStraight-${version}.${ext}",
+      "uninstallDisplayName": "SitStraight"
     },
     "directories": {
       "buildResources": "./build/",
