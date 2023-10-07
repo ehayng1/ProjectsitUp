@@ -71,7 +71,6 @@ const app = initializeApp(firebaseConfig);
 async function LogIn(event) {
   event.preventDefault();
 
-  // window.api.send("navigateToPage", "index.html");
   console.log("LogIn function triggered");
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;

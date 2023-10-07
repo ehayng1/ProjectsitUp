@@ -16,6 +16,7 @@ import {
   query,
   orderBy,
   limit,
+  limitToLast,
   updateDoc,
   addDoc,
 } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
@@ -87,9 +88,10 @@ let good = []; // empty array
 let bad = [];
 let label = [];
 
+// gets line chart data
 async function getData() {
   const docRef = collection(db, uid);
-  const q = query(docRef, orderBy("timeStamp"), limit(7));
+  const q = query(docRef, orderBy("timeStamp"), limitToLast(7));
 
   const querySnapshot = await getDocs(q); // code that takes time 0.5sec
 
