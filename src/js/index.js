@@ -9,15 +9,15 @@ import {
   getFirestore,
   doc,
   getDoc,
-  serverTimestamp,
-  getDocs,
   setDoc,
   collection,
-  query,
   orderBy,
   limit,
   updateDoc,
   addDoc,
+  query,
+  where,
+  getDocs,
 } from "https://www.gstatic.com/firebasejs/9.19.1/firebase-firestore.js";
 import {
   getAuth,
@@ -33,6 +33,16 @@ const firebaseConfig = {
   messagingSenderId: "145725455668",
   appId: "1:145725455668:web:e9e2f4832d62ec73adf961",
 };
+// firebase setting
+// const firebaseConfig = {
+//   apiKey: "AIzaSyDIRrDmKkf2e3xwSspo14UP88iJXIVMZDQ",
+//   authDomain: "postureproject-665d4.firebaseapp.com",
+//   projectId: "postureproject-665d4",
+//   storageBucket: "postureproject-665d4.appspot.com",
+//   messagingSenderId: "531981476826",
+//   appId: "1:531981476826:web:72f9c47953e30ee12d56e3",
+//   measurementId: "G-33YLD60E06"
+// };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 const auth = getAuth();
@@ -51,7 +61,6 @@ onAuthStateChanged(auth, (user) => {
 
 export async function upload(data) {
   // alert(uid);
-
   const docRef = doc(db, uid, currDate);
   let docSnap = await getDoc(docRef);
   // console.log(data);
@@ -63,13 +72,37 @@ export async function upload(data) {
       }
     }
     console.log("data being set!", data);
+
     await setDoc(doc(db, uid, new Date().toDateString()), tempData);
   } else {
     await setDoc(doc(db, uid, new Date().toDateString()), data);
   }
 }
+
+// load data here
+let currDate = new Date().toDateString();
+
+export async function getUserInfo() {
+  const docRef = doc(db, uid, currDate);
+  let docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    let useTime = docSnap.data().cameraTime / 60000;
+    let good = docSnap.data().goodPosture / 60000;
+    let bad = useTime - good;
+    let breakTime = docSnap.data().breakTime / 60000;
+
+    // console.log(docSnap.data());
+    document.getElementById("useTime").innerText = useTime.toFixed(2) + " min";
+    document.getElementById("break").innerText = breakTime.toFixed(2) + " min";
+    document.getElementById("bad").innerText =
+      (docSnap.data().badPosture / 60000).toFixed(2) + " min";
+    document.getElementById("good").innerText = good.toFixed(2) + " min";
+  }
+}
+
 // resets data
-export async function reset(data) {
+export async function reset() {
   // data.useTime = 0;
   // data.cameraTime = 0;
   // data.goodPosture = 0;
@@ -80,8 +113,6 @@ export async function reset(data) {
   // data.countHeadTurned = 0;
   // data.countHeadUporDown = 0;
   let newData = {
-    useTime: 0,
-    cameraTime: 0,
     goodPosture: 0,
     badPosture: 0,
     breakTime: 0,
@@ -93,23 +124,135 @@ export async function reset(data) {
   return newData;
 }
 
-// load data here
-let currDate = new Date().toDateString();
-
-export async function getUserInfo() {
-  const docRef = doc(db, uid, currDate);
-  let docSnap = await getDoc(docRef);
-
-  if (docSnap.exists()) {
-    console.log(docSnap.data());
-    document.getElementById("useTime").innerText =
-      (docSnap.data().cameraTime / 60000).toFixed(2) + " min";
-    document.getElementById("break").innerText =
-      (docSnap.data().breakTime / 60000).toFixed(2) + " min";
-    document.getElementById("bad").innerText =
-      (docSnap.data().badPosture / 60000).toFixed(2) + " min";
-    document.getElementById("good").innerText =
-      (docSnap.data().goodPosture / 60000).toFixed(2) + " min";
-  }
-}
 getUserInfo();
+
+// code for daily tips
+const tip1 = {
+  title: "Be mindful of your posture",
+  author: "Mayo Clinic - Proper ergonomics for sitting",
+  description:
+    "Throughout the day, consciously check your posture and make adjustments if needed. Develop the habit of sitting and standing tall with your shoulders back and your head aligned with your spine.",
+};
+
+const tip2 = {
+  title: "tip2",
+  author: "Mayo Clinic - Proper ergonomics for sitting",
+  description:
+    "Throughout the day, consciously check your posture and make adjustments if needed. Develop the habit of sitting and standing tall with your shoulders back and your head aligned with your spine.",
+};
+
+const tip3 = {
+  title: "tip3",
+  author: "Mayo Clinic - Proper ergonomics for sitting",
+  description:
+    "Throughout the day, consciously check your posture and make adjustments if needed. Develop the habit of sitting and standing tall with your shoulders back and your head aligned with your spine.",
+};
+
+let tips = [tip1, tip2, tip3, tip1, tip2, tip3, tip1];
+
+// 1. getDoc()
+// let docId = new Date().toDateString();
+// const docRef = doc(db, "data", docId);
+// const docSnap = await getDoc(docRef);
+// let doc1;
+// let DailyPostureTipIndex;
+
+// if (docSnap.exists()) {
+//   console.log("Document data:", docSnap.data());
+//   doc1 = docSnap.data();
+// } else {
+//   // docSnap.data() will be undefined in this case
+//   console.log("No such document!");
+// }
+
+// // 2. if DailyPostureTip exists in the document, get that number
+// if (Number.isInteger(doc1.DailyPostureTip)) {
+//   DailyPostureTipIndex = doc1.DailyPostureTip;
+// }
+// // 2.1. if not, updateDoc with DailyPostureTip using Math.floor(Math.random() * (7 - 0) + 0)
+// else {
+//   updateDoc(docRef, {
+//     DailyPostureTipIndex: Math.floor(Math.random() * (7 - 0) + 0),
+//   });
+// }
+// document.getElementById("PostureTitle").innerText =
+//   tips[DailyPostureTipIndex].title;
+// document.getElementById("PostureAuthor").innerText =
+//   tips[DailyPostureTipIndex].author;
+// document.getElementById("PostureDescription").innerText =
+//   tips[DailyPostureTipIndex].description;
+
+let countDistance = 0;
+let countHeadTurned = 0;
+let countHeadTowardShoulder = 0;
+let countHeadUporDown = 0;
+// Maximum of the counts of bad posutres
+let maxCount = 0;
+let secondMaxCount = 0;
+
+async function getCountData() {
+  // Getting the posture Counts.
+  const q = query(collection(db, "data"));
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    // doc.data() is never undefined for query doc snapshots
+    let data = doc.data();
+    countDistance = countDistance + data.countDistance;
+    countHeadTurned = countHeadTurned + data.countHeadTurned;
+    countHeadTowardShoulder =
+      countHeadTowardShoulder + data.countHeadTowardShoulder;
+    countHeadUporDown = countHeadUporDown + data.countHeadUporDown;
+  });
+  maxCount = Math.max(
+    countDistance,
+    countHeadTurned,
+    countHeadTowardShoulder,
+    countHeadUporDown
+  );
+  let arr = [
+    countDistance,
+    countHeadTurned,
+    countHeadTowardShoulder,
+    countHeadUporDown,
+  ];
+  var iframe = document.createElement("iframe");
+  iframe.width = "auto";
+  iframe.height = "60%";
+  if (maxCount === countDistance) {
+    maxCount = "countDistance";
+    arr.splice(0, 1);
+  } else if (maxCount === countHeadTurned) {
+    maxCount = "countHeadTurned";
+    arr.splice(1, 1);
+  } else if (maxCount === countHeadTowardShoulder) {
+    maxCount = "countHeadTowardShoulder";
+    arr.splice(2, 1);
+  } else if (maxCount === countHeadUporDown) {
+    arr.splice(3, 1);
+    iframe.src = "https://www.youtube.com/embed/eznjIHMTi_U";
+    maxCount = "countHeadUporDown";
+  }
+  // gets the seoncd MaxCount
+  secondMaxCount = arr.reduce((a, b) => Math.max(a, b), -Infinity);
+  var iframe2 = document.createElement("iframe");
+  iframe2.width = "auto";
+  iframe2.height = "60%";
+  if (secondMaxCount === countDistance) {
+    secondMaxCount = "countDistance";
+    iframe2.src = "https://www.youtube.com/embed/wQylqaCl8Zo";
+  } else if (secondMaxCount === countHeadTurned) {
+    secondMaxCount = "countHeadTurned";
+    iframe2.src = "https://www.youtube.com/embed/XDio1qSGWhc";
+  } else if (secondMaxCount === countHeadTowardShoulder) {
+    secondMaxCount = "countHeadTowardShoulder";
+    iframe2.src = "https://www.youtube.com/embed/JEtyI4ufoX4";
+  } else if (secondMaxCount === countHeadUporDown) {
+    iframe2.src = "https://www.youtube.com/embed/eznjIHMTi_U";
+    secondMaxCount = "countHeadUporDown";
+  }
+  document.getElementById("video").prepend(iframe);
+  document.getElementById("video2").prepend(iframe2);
+}
+getCountData();
+
+// console.log(countDistance);

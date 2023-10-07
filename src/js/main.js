@@ -20,6 +20,9 @@ function reset() {
   countHeadTowardShoulder = 0;
   countHeadTurned = 0;
   countHeadUporDown = 0;
+
+  useTimeStart = new Date().getTime();
+  cameraStartTime = new Date().getTime();
 }
 
 //entry point :
@@ -87,6 +90,7 @@ export async function nextFrame() {
     body.style.background = "#fff";
   }
 
+  // detected
   if (JEEFACETRANSFERAPI.is_detected()) {
     // Do something awesome with rotation values
     let rotation = JEEFACETRANSFERAPI.get_rotationStabilized();
@@ -108,7 +112,8 @@ export async function nextFrame() {
         if (state !== "Bad") {
           let data = {
             timeStamp: serverTimestamp(),
-            useTime: useTime,
+            useTime: useTimeEnd - useTimeStart,
+            // useTime: useTime,
             cameraTime: cameraTime,
             goodPosture: goodPosture,
             badPosture: useTime - goodPosture,
@@ -118,9 +123,7 @@ export async function nextFrame() {
             countHeadTurned: countHeadTurned,
             countHeadUporDown: countHeadUporDown,
           };
-          await upload(data);
-          getUserInfo();
-          data = reset();
+          await updateData();
         }
         state = "Bad";
         goodEndTime = new Date().getTime();
@@ -171,7 +174,7 @@ export async function nextFrame() {
           countHeadTurned++;
         }
         if (!isHeadPostureOk[2]) {
-          messageContent += "<p>Head is bend towards sholders.</p>";
+          messageContent += "<p>Head is bent towards sholders.</p>";
           countHeadTowardShoulder++;
         }
         message.innerHTML = messageContent;
@@ -181,7 +184,9 @@ export async function nextFrame() {
     else {
       if (state !== "Good") {
         let data = {
-          useTime: useTime,
+          useTime: useTimeEnd - useTimeStart,
+
+          // useTime: useTime,
           timeStamp: serverTimestamp(),
           cameraTime: cameraTime,
           goodPosture: goodPosture,
@@ -193,9 +198,7 @@ export async function nextFrame() {
           countHeadTurned: countHeadTurned,
           countHeadUporDown: countHeadUporDown,
         };
-        await upload(data);
-        getUserInfo();
-        data = reset();
+        await updateData();
       }
       state = "Good";
       console.log("Good Posture");
@@ -253,8 +256,11 @@ export async function nextFrame() {
     useTimeEnd = new Date().getTime();
 
     if (state !== "Not Detected") {
+      message = document.querySelector("#message");
+      message.innerHTML = "";
       let data = {
-        useTime: useTime,
+        useTime: useTimeEnd - useTimeStart,
+        // useTime: useTime,
         timeStamp: serverTimestamp(),
         cameraTime: cameraTime,
         goodPosture: goodPosture,
@@ -266,14 +272,11 @@ export async function nextFrame() {
         countHeadTurned: countHeadTurned,
         countHeadUporDown: countHeadUporDown,
       };
-      await upload(data);
-      data = reset();
-      getUserInfo();
+      await updateData();
     }
     state = "Not Detected";
 
     console.log("Not Detected");
-    // isBreak = true
     let tempUseTime = useTimeEnd - useTimeStart;
     if (tempUseTime > timeThreshold) {
       useTime = useTime + tempUseTime;
@@ -347,6 +350,68 @@ export function quit() {
     // just quit
   }
 }
+export async function updateData() {
+  //wrap up
+  cameraEndTime = new Date().getTime();
+  let tempTime = cameraEndTime - cameraStartTime;
+  cameraTime = cameraTime + tempTime;
+
+  goodEndTime = new Date().getTime();
+  tempTime = goodEndTime - goodStartTime;
+  goodPosture = tempTime + goodPosture;
+  // goodPosture = tempTime;
+
+  useTimeEnd = new Date().getTime();
+  tempTime = useTimeEnd - useTimeStart;
+  useTime = useTime + tempTime;
+  // useTime =  tempTime;
+
+  // append each times to firebase database instead of console logging
+  console.log("Total Camera Time: ", Math.floor(cameraTime / 1000), " seconds");
+  console.log("Use Time: ", Math.floor(useTime / 1000), " seconds");
+  console.log(
+    "Break Time: ",
+    Math.floor((cameraTime - useTime) / 1000),
+    " seconds"
+  );
+  console.log(
+    "Good Posture Duration: ",
+    Math.floor(goodPosture / 1000),
+    " seconds"
+  );
+  console.log(
+    "Bad Posture Duration: ",
+    Math.abs(Math.floor((useTime - goodPosture) / 1000)),
+    " seconds"
+  );
+  console.log("Distance: ", countDistance);
+  console.log("HeadUporDown: ", countHeadUporDown);
+  console.log("HeadTowardShoulder: ", countHeadTowardShoulder);
+  console.log("HeadTurned: ", countHeadTurned);
+
+  let data = {
+    useTime: useTime,
+    timeStamp: serverTimestamp(),
+    cameraTime: cameraTime,
+    goodPosture: goodPosture,
+    badPosture: useTime - goodPosture,
+    breakTime: cameraTime - useTime,
+    // breakTime: useTime - cameraTime,
+    countDistance: countDistance,
+    countHeadTowardShoulder: countHeadTowardShoulder,
+    countHeadTurned: countHeadTurned,
+    countHeadUporDown: countHeadUporDown,
+  };
+  await upload(data);
+  data = reset();
+  getUserInfo();
+
+  cameraStartTime = new Date().getTime();
+  useTimeStart = new Date().getTime();
+  goodStartTime = new Date().getTime();
+  badStartTime = new Date().getTime();
+}
+
 //when the electron ends call this function manually as well
 export async function stop() {
   //wrap up
@@ -410,9 +475,8 @@ export async function stop() {
 export function handleSwitch() {
   console.log("Switch Button Clicked!");
   let camera;
-  let isFirstPage = !document.getElementById("cameraSwitch");
-  // console.log(document.getElementById("cameraSwitch"));
 
+  let isFirstPage = !document.getElementById("cameraSwitch");
   if (isFirstPage) {
     camera = document.getElementById("cameraSwitchIndex");
   } else {

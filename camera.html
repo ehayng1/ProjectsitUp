@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Sit Straight</title>
+    <title>Sit Up</title>
     <link rel="stylesheet" href="src/css/style.css" />
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="./contents/bootstrap/css/sb-admin-2.css" />
@@ -69,7 +69,7 @@
             <!-- <i class="fas fa-laugh-wink"></i> -->
             <i class="fa fa-chair"></i>
           </div>
-          <div class="sidebar-brand-text mx-3">Sit Straight</div>
+          <div class="sidebar-brand-text mx-3">Sit Up</div>
         </a>
 
         <!-- Divider -->
@@ -91,14 +91,13 @@
         <li class="nav-item">
           <a class="nav-link" href="login.html">
             <i class="fa fa-sign-in-alt mr-2" style="font-size: 1.2em"></i>
-            <span>Sign In / Sign Up</span></a
+            <span>Log Out</span></a
           >
         </li>
 
         <!-- Divider -->
         <hr class="sidebar-divider d-none d-md-block" />
       </ul>
-
       <!-- End of Sidebar -->
 
       <!-- Content Wrapper -->
@@ -129,16 +128,25 @@
           >
             Click the Camera On button to see your posture
           </div>
-          <div class="h4 mt-4" style="display: block; text-align: center">
+          <div class="h4 mt-2" style="display: block; text-align: center">
             When your posture goes bad, the reason will show up!
           </div>
+          <span class="mt-4 mx-5" style="display: block; text-align: center">
+            * Current version of Sit Up detects posture based on the location of
+            the face.
+          </span>
+          <span class="mx-5" style="display: block; text-align: center">
+            Future versions of Sit Up will detect different postures of back and
+            waist.
+          </span>
         </div>
 
         <div
           id="camera"
           style="display: none; margin-left: 15%; margin-top: 5%"
         >
-          <canvas id="canvas" class="" width="1000" height="800"> ></canvas>
+          <!-- <canvas id="canvas" class="" width="1000" height="800"> ></canvas> -->
+          <canvas id="canvas" class="" width="50vw" height="60vh"> ></canvas>
           <div
             style="color: black; margin-left: 20%"
             class="h3 mt-3"

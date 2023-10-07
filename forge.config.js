@@ -14,6 +14,7 @@ module.exports = {
   makers: [
     {
       name: "@electron-forge/maker-squirrel",
+      platforms: ["win64"],
       config: {},
     },
     {
@@ -22,6 +23,7 @@ module.exports = {
     },
     {
       name: "@electron-forge/maker-deb",
+
       config: {},
     },
     {

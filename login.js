@@ -81,15 +81,29 @@ async function LogIn(event) {
     .then((userCredential) => {
       // Signed in
       const user = userCredential.user;
-      // navigation function
+    })
+    .then(() => {
+      const auth = getAuth();
+      const user = auth.currentUser;
+      alert("Welcome " + user.displayName + "!");
       window.electronAPI.send("navigateToPage", "index.html");
-      // ...
     })
     .catch((error) => {
       const errorCode = error.code;
-      const errorMessage = error.message;
-      console.log(errorCode);
-      console.log(errorMessage);
+      // const errorMessage = error.message;
+      if (email === "") {
+        alert("Please enter email address.");
+      } else if (password === "") {
+        alert("Please enter password.");
+      } else if (errorCode == "auth/network-request-failed") {
+        alert("Network connection failed.");
+      } else if (errorCode == "auth/invalid-email") {
+        alert("Email format is not correct.");
+      } else if (errorCode == "auth/user-not-found") {
+        alert("Email does not exist.");
+      } else if (errorCode == "auth/wrong-password") {
+        alert("Password is incorrect.");
+      }
     });
 }
 document.addEventListener("DOMContentLoaded", () => {

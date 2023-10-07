@@ -57,6 +57,7 @@ let close = 20;
 let upDown = 10;
 let turn = 20;
 let lean = 10;
+
 async function getData() {
   const docRef = collection(db, uid);
   const q = query(docRef, orderBy("timeStamp"), limit(7));
@@ -86,15 +87,9 @@ function updatePieChart() {
       ],
       datasets: [
         {
-          // data: [55, 30, 23, 42],
           data: [close, upDown, turn, lean],
-          // backgroundColor: ["#4e73df", "#1cc88a", "#36b9cc", "#f6c23e"],
-
           backgroundColor: ["#f6c23e", "#e74a3b", "#3498db", "#8e44ad"],
           hoverBackgroundColor: ["#e0ac1c", "#c42720", "#2c6dad", "#6b3080"],
-          // backgroundColor: ["#e74a3b", "#FFA500", "#FFFF00", "#5a5c69"],
-
-          // hoverBackgroundColor: ["#f6c23e", "#e74a3b", "#3498db", "#8e44ad"],
           hoverBorderColor: "rgba(234, 236, 244, 1)",
         },
       ],

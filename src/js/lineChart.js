@@ -92,7 +92,6 @@ async function getData() {
   const q = query(docRef, orderBy("timeStamp"), limit(7));
 
   const querySnapshot = await getDocs(q); // code that takes time 0.5sec
-  // console.log(querySnapshot); // undefined
 
   querySnapshot.forEach((doc) => {
     let data = doc.data();
@@ -105,10 +104,6 @@ async function getData() {
     bad.push(doc.data().badPosture / 60000);
     label.push(month + " " + date);
   });
-  // console.log(label);
-  // console.log(good);
-  // console.log(bad);
-  // good = bad = [12, 24, 12, 5];
 }
 function updateLineChart() {
   var ctx = document.getElementById("myAreaChart");
@@ -132,7 +127,6 @@ function updateLineChart() {
           pointHitRadius: 10,
           pointBorderWidth: 2,
           data: good,
-          // data: [1, 4, 23, 1],
         },
         {
           label: "Bad Posture",
@@ -148,7 +142,6 @@ function updateLineChart() {
           pointHitRadius: 10,
           pointBorderWidth: 2,
           data: bad,
-          // data: [2, 5, 2, 6],
         },
       ],
     },
